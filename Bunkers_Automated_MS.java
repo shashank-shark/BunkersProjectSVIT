@@ -506,6 +506,57 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
                                 JLabel lblNote_1 = new JLabel("NOTE: For now sending SMS is implemented on localsystem only");
                                 lblNote_1.setBounds(12, 198, 459, 15);
                                 panel_16.add(lblNote_1);
+                                
+                                JLabel lblRecepientPhNo = new JLabel("Recepient Ph no:");
+                                lblRecepientPhNo.setFont(new Font("Consolas", Font.BOLD, 18));
+                                lblRecepientPhNo.setBounds(12, 8, 161, 34);
+                                panel_16.add(lblRecepientPhNo);
+                                
+                                numberTextField = new JTextField();
+                                numberTextField.setFont(new Font("Dialog", Font.BOLD, 16));
+                                numberTextField.setHorizontalAlignment(SwingConstants.CENTER);
+                                numberTextField.setBounds(12, 38, 242, 47);
+                                panel_16.add(numberTextField);
+                                numberTextField.setColumns(10);
+                                
+                                JPanel panel_19 = new JPanel();
+                                panel_19.setBorder(new TitledBorder(null, "Enter the message", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+                                panel_19.setBounds(309, 13, 403, 169);
+                                panel_16.add(panel_19);
+                                panel_19.setLayout(null);
+                                
+                                JPanel panel_18 = new JPanel();
+                                panel_18.setBounds(5, 17, 393, 147);
+                                panel_19.add(panel_18);
+                                panel_18.setLayout(null);
+                                
+                                
+                                JScrollPane scrollPane_1 = new JScrollPane();
+                                scrollPane_1.setBounds(12, 12, 369, 123);
+                                panel_18.add(scrollPane_1);
+                                
+                                JTextArea messageTextArea = new JTextArea();
+                                scrollPane_1.setViewportView(messageTextArea);
+                                messageTextArea.setFont(new Font("Andale Mono", Font.BOLD, 16));
+                                messageTextArea.setColumns(10);
+                                messageTextArea.setRows(1);
+                                messageTextArea.setLineWrap(true);
+                                messageTextArea.setWrapStyleWord(true);
+                                
+                                JButton messageButton = new JButton("SEND");
+                                messageButton.addActionListener(new ActionListener() {
+                                	public void actionPerformed(ActionEvent e) {
+                                		String phNo = numberTextField.getText();
+                                		String messg = messageTextArea.getText();
+                                		
+                                		/* Now i create an object of SendSMS and send the sms */
+                                		SendSMS obj = new SendSMS();
+                                		obj.sendSMSTo(phNo,messg);
+                                	}
+                                });
+                                messageButton.setFont(new Font("Dialog", Font.BOLD, 18));
+                                messageButton.setBounds(49, 97, 137, 40);
+                                panel_16.add(messageButton);
         jPanel2.setLayout(null);
 
         t2Table.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -1063,4 +1114,5 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
     private JTextField nameTextField;
     private JTextField usnTextField;
     private JTextField deleteText;
+    private JTextField numberTextField;
 }
