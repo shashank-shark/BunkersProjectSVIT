@@ -460,9 +460,52 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
                                 jPanel1.add(panel_13);
                                 panel_13.setLayout(null);
                                 
-                                table = new JTable();
-                                table.setBounds(12, 12, 738, 476);
-                                panel_13.add(table);
+                                JPanel panel_15 = new JPanel();
+                                panel_15.setBorder(new TitledBorder(null, "INSTRUCTIONS", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+                                panel_15.setBounds(7, 25, 748, 217);
+                                panel_13.add(panel_15);
+                                panel_15.setLayout(null);
+                                
+                                JPanel panel_14 = new JPanel();
+                                panel_14.setBackground(new Color(250, 240, 230));
+                                panel_14.setBounds(5, 17, 738, 188);
+                                panel_15.add(panel_14);
+                                panel_14.setLayout(null);
+                                
+                                JLabel lblMakeSure = new JLabel("(*) Make sure the entry you have made is correct.");
+                                lblMakeSure.setFont(new Font("DejaVu Math TeX Gyre", Font.BOLD, 16));
+                                lblMakeSure.setBounds(12, 12, 475, 27);
+                                panel_14.add(lblMakeSure);
+                                
+                                JLabel lblNowSelect = new JLabel("(*) Now select the present date from the calender.");
+                                lblNowSelect.setFont(new Font("DejaVu Math TeX Gyre", Font.BOLD, 16));
+                                lblNowSelect.setBounds(12, 51, 475, 27);
+                                panel_14.add(lblNowSelect);
+                                
+                                JLabel lblEnterThe = new JLabel("(*) Enter the number of hours of class taken today.");
+                                lblEnterThe.setFont(new Font("DejaVu Math TeX Gyre", Font.BOLD, 16));
+                                lblEnterThe.setBounds(12, 90, 475, 27);
+                                panel_14.add(lblEnterThe);
+                                
+                                JLabel lblNowClick = new JLabel("(*) Now click on UPDATE.");
+                                lblNowClick.setFont(new Font("DejaVu Math TeX Gyre", Font.BOLD, 16));
+                                lblNowClick.setBounds(12, 129, 475, 27);
+                                panel_14.add(lblNowClick);
+                                
+                                JPanel panel_17 = new JPanel();
+                                panel_17.setBorder(new TitledBorder(null, "Send SMS", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+                                panel_17.setBounds(2, 246, 753, 247);
+                                panel_13.add(panel_17);
+                                panel_17.setLayout(null);
+                                
+                                JPanel panel_16 = new JPanel();
+                                panel_16.setBounds(5, 22, 736, 225);
+                                panel_17.add(panel_16);
+                                panel_16.setLayout(null);
+                                
+                                JLabel lblNote_1 = new JLabel("NOTE: For now sending SMS is implemented on localsystem only");
+                                lblNote_1.setBounds(12, 198, 459, 15);
+                                panel_16.add(lblNote_1);
         jPanel2.setLayout(null);
 
         t2Table.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -631,19 +674,14 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
         subjectTextField = new JTextField();
         subjectTextField.setFont(new Font("Dialog", Font.BOLD, 16));
         subjectTextField.setHorizontalAlignment(SwingConstants.CENTER);
-        subjectTextField.setBounds(12, 81, 176, 30);
+        subjectTextField.setBounds(51, 81, 176, 30);
         panel.add(subjectTextField);
         subjectTextField.setColumns(10);
         
         JLabel lblSubject = new JLabel("SUBJECT");
         lblSubject.setFont(new Font("Dialog", Font.BOLD, 18));
-        lblSubject.setBounds(12, 65, 87, 15);
+        lblSubject.setBounds(86, 65, 87, 15);
         panel.add(lblSubject);
-        
-        JButton btnNewButton = new JButton("GET");
-        btnNewButton.setFont(new Font("Dialog", Font.BOLD, 15));
-        btnNewButton.setBounds(200, 76, 77, 41);
-        panel.add(btnNewButton);
 
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -1025,5 +1063,4 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
     private JTextField nameTextField;
     private JTextField usnTextField;
     private JTextField deleteText;
-    private JTable table;
 }
