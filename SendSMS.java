@@ -5,13 +5,13 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 public class SendSMS {
-	public void sendSMSTo()
+	public void sendSMSTo(String getNumber, String messageFrom)
 	{
 		try {
 
-			String recipient = "+919900767621";
+			String recipient = getNumber;
 
-			String message = " Greetings from Mr. SHashank! Have a nice day!";
+			String message = messageFrom;
 
 			String username = "admin";
 
