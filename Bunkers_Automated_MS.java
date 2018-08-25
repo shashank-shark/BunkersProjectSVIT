@@ -1,5 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
+ * To change WOW this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -15,10 +15,14 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+
+import org.omg.PortableInterceptor.SUCCESSFUL;
 
 import net.proteanit.sql.DbUtils;
 
@@ -151,7 +155,7 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
         t2Table = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        shortageTable = new javax.swing.JTable();
         jPanel5 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -509,13 +513,13 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
                                 
                                 JLabel lblRecepientPhNo = new JLabel("Recepient Ph no:");
                                 lblRecepientPhNo.setFont(new Font("Consolas", Font.BOLD, 18));
-                                lblRecepientPhNo.setBounds(12, 8, 161, 34);
+                                lblRecepientPhNo.setBounds(12, 41, 161, 34);
                                 panel_16.add(lblRecepientPhNo);
                                 
                                 numberTextField = new JTextField();
                                 numberTextField.setFont(new Font("Dialog", Font.BOLD, 16));
                                 numberTextField.setHorizontalAlignment(SwingConstants.CENTER);
-                                numberTextField.setBounds(12, 38, 242, 47);
+                                numberTextField.setBounds(12, 87, 242, 47);
                                 panel_16.add(numberTextField);
                                 numberTextField.setColumns(10);
                                 
@@ -555,8 +559,13 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
                                 	}
                                 });
                                 messageButton.setFont(new Font("Dialog", Font.BOLD, 18));
-                                messageButton.setBounds(49, 97, 137, 40);
+                                messageButton.setBounds(46, 146, 137, 40);
                                 panel_16.add(messageButton);
+                                
+                                JLabel lblForPersonsOf = new JLabel("For persons of Intrest Only");
+                                lblForPersonsOf.setFont(new Font("Cambria", Font.BOLD, 20));
+                                lblForPersonsOf.setBounds(12, 7, 279, 22);
+                                panel_16.add(lblForPersonsOf);
         jPanel2.setLayout(null);
 
         t2Table.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -716,6 +725,8 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
         		{
         			SendMailForTemp obj = new SendMailForTemp(topicsCovered, subject,hours,notPresentEmail[i]);
         		}
+        		JOptionPane pobj = new JOptionPane();
+        		pobj.showMessageDialog(null, "Mails sent successfully");
         	}
         });
         btnNewButton_1.setFont(new Font("Dialog", Font.BOLD, 17));
@@ -736,8 +747,8 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
 
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTable2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jTable2.setModel(new DefaultTableModel(
+        shortageTable.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        shortageTable.setModel(new DefaultTableModel(
         	new Object[][] {
         		{null, null, null},
         		{null, null, null},
@@ -793,8 +804,15 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
         	new String[] {
         		"USN", "NAME", "ATTENDENCE"
         	}
-        ));
-        jScrollPane2.setViewportView(jTable2);
+        ) {
+        	Class[] columnTypes = new Class[] {
+        		String.class, String.class, Float.class
+        	};
+        	public Class getColumnClass(int columnIndex) {
+        		return columnTypes[columnIndex];
+        	}
+        });
+        jScrollPane2.setViewportView(shortageTable);
 
         jPanel3.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 650, 470));
 
@@ -805,12 +823,12 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
         
         JPanel panel_8 = new JPanel();
         panel_8.setBorder(new TitledBorder(null, "Get shortest list", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-        panel_8.setBounds(7, 17, 336, 273);
+        panel_8.setBounds(0, 0, 336, 185);
         jPanel5.add(panel_8);
         panel_8.setLayout(null);
         
         JPanel panel_7 = new JPanel();
-        panel_7.setBounds(5, 17, 326, 251);
+        panel_7.setBounds(5, 17, 326, 160);
         panel_8.add(panel_7);
         panel_7.setLayout(null);
         
@@ -824,17 +842,78 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
         lblInTotalTill.setBounds(12, 28, 189, 15);
         panel_7.add(lblInTotalTill);
         
-        textField = new JTextField();
-        textField.setHorizontalAlignment(SwingConstants.CENTER);
-        textField.setFont(new Font("Dialog", Font.PLAIN, 18));
-        textField.setBounds(12, 55, 189, 37);
-        panel_7.add(textField);
-        textField.setColumns(10);
+        noHrsShort = new JTextField();
+        noHrsShort.setHorizontalAlignment(SwingConstants.CENTER);
+        noHrsShort.setFont(new Font("Dialog", Font.PLAIN, 18));
+        noHrsShort.setBounds(12, 55, 302, 37);
+        panel_7.add(noHrsShort);
+        noHrsShort.setColumns(10);
         
-        JButton btnNewButton_2 = new JButton("OK");
-        btnNewButton_2.setFont(new Font("Dialog", Font.BOLD, 18));
-        btnNewButton_2.setBounds(213, 55, 96, 37);
-        panel_7.add(btnNewButton_2);
+        JButton getListBtn = new JButton("GET LIST");
+        getListBtn.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		/* first get the number of hours */
+        		int totHours = Integer.parseInt(noHrsShort.getText());
+        		
+        		/* here we are going to get the shortage list */
+        		try {
+					myRes = myStat.executeQuery("select * from attendinfo where nhours/"+totHours+" < 0.85");
+					DefaultTableModel model = (DefaultTableModel)shortageTable.getModel();
+					int l = 0;
+					/* Now insert the entire result set into shoratgelist table */
+					shortageTable.setModel(DbUtils.resultSetToTableModel(myRes));
+					
+					/* Now we need to insert the shoratge list guys to shortagelist table */
+					myStat = myCon.createStatement();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+        		
+        		
+        		
+        		/* then we display it to the list */
+//        		new GetShortageList().getShortageList(shortageTable);
+        		
+        		
+        	}
+        });
+        getListBtn.setFont(new Font("Dialog", Font.BOLD, 18));
+        getListBtn.setBounds(84, 104, 153, 37);
+        panel_7.add(getListBtn);
+        
+        JPanel panel_21 = new JPanel();
+        panel_21.setBorder(new TitledBorder(null, "Message to be sent", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+        panel_21.setBounds(10, 197, 336, 273);
+        jPanel5.add(panel_21);
+        panel_21.setLayout(null);
+        
+        JPanel panel_20 = new JPanel();
+        panel_20.setBounds(5, 17, 326, 261);
+        panel_21.add(panel_20);
+        panel_20.setLayout(null);
+        
+        JScrollPane scrollPane_2 = new JScrollPane();
+        scrollPane_2.setBounds(12, 12, 302, 188);
+        panel_20.add(scrollPane_2);
+        
+        JTextArea mailTextArea2 = new JTextArea();
+        mailTextArea2.setFont(new Font("DejaVu Serif", Font.BOLD, 16));
+        mailTextArea2.setColumns(10);
+        mailTextArea2.setRows(1);
+        mailTextArea2.setLineWrap(true);
+        mailTextArea2.setWrapStyleWord(true);
+        scrollPane_2.setViewportView(mailTextArea2);
+        
+        JButton btnSendMail2 = new JButton("SEND MAIL");
+        btnSendMail2.setFont(new Font("Dialog", Font.BOLD, 14));
+        btnSendMail2.setBounds(197, 209, 117, 40);
+        panel_20.add(btnSendMail2);
+        
+        JButton btnSendSms = new JButton("SEND SMS");
+        btnSendSms.setFont(new Font("Dialog", Font.BOLD, 14));
+        btnSendSms.setBounds(12, 212, 117, 40);
+        panel_20.add(btnSendSms);
 
         jTabbedPane1.addTab("SHORTAGE LIST", jPanel3);
 
@@ -903,38 +982,38 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
         
         JLabel lblName = new JLabel("NAME");
         lblName.setFont(new Font("Dialog", Font.BOLD, 15));
-        lblName.setBounds(12, 64, 49, 30);
+        lblName.setBounds(12, 45, 49, 30);
         panel_9.add(lblName);
         
         JLabel lblEmailid = new JLabel("EMAIL-ID");
         lblEmailid.setFont(new Font("Dialog", Font.BOLD, 15));
-        lblEmailid.setBounds(12, 123, 75, 15);
+        lblEmailid.setBounds(12, 91, 75, 15);
         panel_9.add(lblEmailid);
         
         JLabel lblAttend = new JLabel("ATT %");
         lblAttend.setFont(new Font("Dialog", Font.BOLD, 15));
-        lblAttend.setBounds(12, 178, 62, 15);
+        lblAttend.setBounds(12, 130, 62, 15);
         panel_9.add(lblAttend);
         
         emailIds = new JTextField();
         emailIds.setHorizontalAlignment(SwingConstants.CENTER);
         emailIds.setFont(new Font("DejaVu Math TeX Gyre", Font.BOLD, 15));
         emailIds.setColumns(10);
-        emailIds.setBounds(92, 115, 179, 32);
+        emailIds.setBounds(92, 83, 179, 32);
         panel_9.add(emailIds);
         
         attendPer = new JTextField();
         attendPer.setHorizontalAlignment(SwingConstants.CENTER);
         attendPer.setFont(new Font("DejaVu Math TeX Gyre", Font.BOLD, 15));
         attendPer.setColumns(10);
-        attendPer.setBounds(92, 170, 179, 32);
+        attendPer.setBounds(92, 122, 179, 32);
         panel_9.add(attendPer);
         
         nameTextField = new JTextField();
         nameTextField.setHorizontalAlignment(SwingConstants.CENTER);
         nameTextField.setFont(new Font("DejaVu Math TeX Gyre", Font.BOLD, 15));
         nameTextField.setColumns(10);
-        nameTextField.setBounds(92, 62, 179, 32);
+        nameTextField.setBounds(92, 45, 179, 32);
         panel_9.add(nameTextField);
         
         usnTextField = new JTextField();
@@ -957,9 +1036,13 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
 					String name = nameTextField.getText();
 					String emString = emailIds.getText();
 					float perAt = Float.parseFloat(attendPer.getText());
+					String phoneNo = phonetextField.getText();
 					
-					myStat.executeUpdate("insert into students(usn,name,email,phone,percent) values ('" + usn +"','"+name+"','"+emString+"',' ',"+perAt+ ")");
-//					System.out.println(("insert into students(id,usn,name,email,phone,percent) values ('" + usn +"','"+name+"','"+emString+"',' ',"+perAt+")"));
+					myStat.executeUpdate("insert into students(usn,name,email,phone) values ('" + usn +"','"+name+"','"+emString+"','"+phoneNo+"'"+")");
+//					System.out.println("insert into students(usn,name,email,phone,percent) values ('" + usn +"','"+name+"','"+emString+"','"+phoneNo+"',"+perAt+ ")");
+					myStat.executeUpdate("insert into attendinfo(usn,name,nhours) values ('" + usn +"','"+name+"',"+0+")");
+					JOptionPane jopn = new JOptionPane();
+					jopn.showMessageDialog(null, "Record Successfully inserted");
 					filldetails();
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
@@ -970,8 +1053,20 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
         	}
         });
         btnInsert.setFont(new Font("Dialog", Font.BOLD, 18));
-        btnInsert.setBounds(92, 228, 158, 42);
+        btnInsert.setBounds(68, 218, 158, 42);
         panel_9.add(btnInsert);
+        
+        JLabel lblPhoneNo = new JLabel("Ph No.");
+        lblPhoneNo.setFont(new Font("Dialog", Font.BOLD, 15));
+        lblPhoneNo.setBounds(12, 170, 62, 25);
+        panel_9.add(lblPhoneNo);
+        
+        phonetextField = new JTextField();
+        phonetextField.setHorizontalAlignment(SwingConstants.CENTER);
+        phonetextField.setFont(new Font("DejaVu Math TeX Gyre", Font.BOLD, 15));
+        phonetextField.setColumns(10);
+        phonetextField.setBounds(92, 166, 179, 32);
+        panel_9.add(phonetextField);
         
         JPanel panel_12 = new JPanel();
         panel_12.setBorder(new TitledBorder(null, "Delete Records", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -1007,6 +1102,9 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
 					myStat.close();
 					myStat = myCon.createStatement();
 					myStat.executeUpdate("delete from students where usn='"+usn+"'");
+					myStat.executeUpdate("delete from attendinfo where usn='"+usn+"'");
+					JOptionPane opn = new JOptionPane();
+					opn.showMessageDialog(null, "Record Successfully deleted");
 					filldetails();
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
@@ -1091,7 +1189,7 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable insertDeleteTable;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JTable shortageTable;
     private javax.swing.JTable tab1Table;
     private javax.swing.JTable t2Table;
     private JPanel panel;
@@ -1106,7 +1204,7 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
     private JLabel label_5;
     private JLabel label_6;
     private JLabel lblSelectTheDate;
-    private JTextField textField;
+    private JTextField noHrsShort;
     private JTextField hoursTextField;
     private JTextField subjectTextField;
     private JTextField emailIds;
@@ -1115,4 +1213,5 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
     private JTextField usnTextField;
     private JTextField deleteText;
     private JTextField numberTextField;
+    private JTextField phonetextField;
 }
