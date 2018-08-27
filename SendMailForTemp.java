@@ -24,7 +24,7 @@ public class SendMailForTemp {
 			String to = emailAddress;
 			String from = "www.shashankreddy@gmail.com";
 			String subject = "Your ward did not attend" + " " + subjectTaught + " for" + Integer.toString(hours) + "hours" ;
-			String messageText = topics;
+			String messageText = "Topics Covered: \n"+topics;
 			boolean sessionDebug = false;
 			
 			Properties props = System.getProperties();
