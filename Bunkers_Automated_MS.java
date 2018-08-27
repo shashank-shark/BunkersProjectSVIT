@@ -19,6 +19,7 @@ import javax.swing.JOptionPane;
 
 import java.awt.Font;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
@@ -34,6 +35,9 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import com.toedter.calendar.JDateChooser;
+
+import javafx.scene.control.ProgressBar;
+
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JTable;
@@ -719,30 +723,53 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
         		/* First get the subject and hours */
         		String subject = subjectTextField.getText();
         		System.out.println(totalAbsent);
+//        		
+//        		JProgressBar progressBar = new JProgressBar(0,100);
+//                progressBar.setBounds(69, 421, 189, 26);
+//                panel.add(progressBar);
         		
+                
+//                progressBar.setValue(0);
+//                progressBar.setStringPainted(true);
+//        		
         		/* Now create object for sendmailtemp */
         		for (int i = 0; i < totalAbsent; i++)
         		{
         			SendMailForTemp obj = new SendMailForTemp(topicsCovered, subject,hours,notPresentEmail[i]);
+//        			progressBar.setValue(i+1);
+        			try {
+    					CallableStatement myCalStat = myCon.prepareCall("{call get_no_of_emails(?)}");
+    					myCalStat.setString(1, notPresentUsn[i]);
+    					myCalStat.execute();
+    				} catch (SQLException e1) {
+    					e1.printStackTrace();
+    				}
         		}
+        		
+        		
+        		
+        		
         		JOptionPane pobj = new JOptionPane();
         		pobj.showMessageDialog(null, "Mails sent successfully");
+        		
+        		/* now get hold of the stored procedure so preprare a callable statement */
+        		
         	}
         });
         btnNewButton_1.setFont(new Font("Dialog", Font.BOLD, 17));
-        btnNewButton_1.setBounds(65, 405, 152, 42);
+        btnNewButton_1.setBounds(66, 405, 152, 42);
         panel.add(btnNewButton_1);
         
         subjectTextField = new JTextField();
         subjectTextField.setFont(new Font("Dialog", Font.BOLD, 16));
         subjectTextField.setHorizontalAlignment(SwingConstants.CENTER);
-        subjectTextField.setBounds(51, 81, 176, 30);
+        subjectTextField.setBounds(56, 81, 176, 30);
         panel.add(subjectTextField);
         subjectTextField.setColumns(10);
         
         JLabel lblSubject = new JLabel("SUBJECT");
         lblSubject.setFont(new Font("Dialog", Font.BOLD, 18));
-        lblSubject.setBounds(86, 65, 87, 15);
+        lblSubject.setBounds(95, 65, 87, 15);
         panel.add(lblSubject);
 
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -863,6 +890,18 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
 					/* Now insert the entire result set into shoratgelist table */
 					shortageTable.setModel(DbUtils.resultSetToTableModel(myRes));
 					
+					Statement freeStat = myCon.createStatement();
+					myRes = freeStat.executeQuery("select * from attendinfo where nhours/"+totHours+" < 0.85");
+					
+					while (myRes.next())
+					{
+						int n = myStat.executeUpdate("update shortagelist set usn='"+myRes.getString("usn")+"', name='"+myRes.getString("name")+"' where usn='"+myRes.getString("usn")+"'");
+						if (n == 0)
+						{
+							myStat.execute("insert into shortagelist (usn,name,percent) values ('"+ myRes.getString("usn")+"','"+myRes.getString("name")+"',0)");
+						}
+					}
+					
 					/* Now we need to insert the shoratge list guys to shortagelist table */
 					myStat = myCon.createStatement();
 				} catch (SQLException e1) {
@@ -906,6 +945,11 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
         scrollPane_2.setViewportView(mailTextArea2);
         
         JButton btnSendMail2 = new JButton("SEND MAIL");
+        btnSendMail2.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		
+        	}
+        });
         btnSendMail2.setFont(new Font("Dialog", Font.BOLD, 14));
         btnSendMail2.setBounds(197, 209, 117, 40);
         panel_20.add(btnSendMail2);
@@ -1049,7 +1093,11 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
 					e1.printStackTrace();
 				}
 				
-				
+				usnTextField.setText("");
+				nameTextField.setText("");
+				emailIds.setText("");
+				attendPer.setText("");
+				phonetextField.setText("");
         	}
         });
         btnInsert.setFont(new Font("Dialog", Font.BOLD, 18));
