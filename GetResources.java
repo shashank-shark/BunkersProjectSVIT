@@ -19,8 +19,8 @@ public class GetResources {
 	/* Now let this file connect to the shortage list database */
 	public  void getCurrentStatus(int n)
 	{
-		int temphours;
-		float tempperc;
+		int temphours = 0;
+		float tempperc = 0.0f;
 		
 		GetDatabaseConnection conObj = new GetDatabaseConnection();
 		try
@@ -42,6 +42,10 @@ public class GetResources {
 					myStat = myCon.createStatement();
 					myStat.executeUpdate("update attendinfo set nhours="+temphours + " where usn='" +Bunkers_Automated_MS.PresentUsn[i]+"'");
 				
+				}
+				else
+				{
+					System.out.println(Bunkers_Automated_MS.PresentUsn[i]);
 				}
 			}
 			
