@@ -15,15 +15,23 @@ import javax.mail.internet.MimeMessage;
  */
 
 public class SendMailForTemp {
-	public SendMailForTemp(String topics, String subjectTaught, int hours, String emailAddress) {
+	public SendMailForTemp(String topics, String subjectTaught, int hours, String[] emailAddress, int key) {
 		try
 		{
 			String host = "smtp.gmail.com";
 			String user = "www.shashankreddy@gmail.com";
 			String pass = "Shashank@1998";
-			String to = emailAddress;
+			
 			String from = "www.shashankreddy@gmail.com";
-			String subject = "Your ward did not attend" + " " + subjectTaught + " for" + Integer.toString(hours) + "hours" ;
+			String subject;
+			if (key == 1)
+			{
+				 subject = "Your ward did not attend" + " " + subjectTaught + " for" + Integer.toString(hours) + "hours" ;
+			}
+			else
+			{
+				 subject = "Your ward has " + subjectTaught + "" ;
+			}
 			String messageText = "Topics Covered: \n"+topics;
 			boolean sessionDebug = false;
 			
@@ -38,21 +46,25 @@ public class SendMailForTemp {
 //			java security
 			java.security.Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
 			
+			InternetAddress[] toAddress = new InternetAddress[emailAddress.length];
+		
 			Session mailSession = Session.getDefaultInstance(props,null);
 			mailSession.setDebug(sessionDebug);
-			Message msg = new MimeMessage(mailSession);
-			msg.setFrom(new InternetAddress(from));
-			InternetAddress[] address = {new InternetAddress(to)};
-			msg.setRecipients(Message.RecipientType.TO, address);
-			msg.setSubject(subject);
-			msg.setSentDate(new Date());
-			msg.setText(messageText);
-			
 			Transport transport =  mailSession.getTransport("smtp");
 			transport.connect(host,user,pass);
-			transport.sendMessage(msg, msg.getAllRecipients());
-			transport.close();
-			System.out.println("Message sent successfully");
+			
+			for (int i = 0; i < emailAddress.length; i++)
+			{
+				Message msg = new MimeMessage(mailSession);
+				msg.setFrom(new InternetAddress(from));
+				InternetAddress[] address = {new InternetAddress(emailAddress[i])};
+				msg.setRecipients(Message.RecipientType.TO, address);
+				msg.setSubject(subject);
+				msg.setSentDate(new Date());
+				msg.setText(messageText);
+				transport.sendMessage(msg, msg.getAllRecipients());
+				System.out.println("Message sent successfully");
+			}
 		}
 		catch (Exception ex)
 		{
