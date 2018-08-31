@@ -70,8 +70,10 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
 	static String notPresentName[] = new String[75];
 	static String notPresentEmail[] = new String[75];
 	static String PresentUsn[] = new String[75];
-	int k = 0;
+	int k = 0, m = 0, key = 0;
+	int shorttageCount = 0;
 	java.util.Date date;
+	String shortMail[] = new String[75];
 	
     public Bunkers_Automated_MS() {
     	
@@ -733,9 +735,9 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
 //                progressBar.setStringPainted(true);
 //        		
         		/* Now create object for sendmailtemp */
+        		SendMailForTemp obj = new SendMailForTemp(topicsCovered, subject,hours,notPresentEmail,1);
         		for (int i = 0; i < totalAbsent; i++)
         		{
-        			SendMailForTemp obj = new SendMailForTemp(topicsCovered, subject,hours,notPresentEmail[i]);
 //        			progressBar.setValue(i+1);
         			try {
     					CallableStatement myCalStat = myCon.prepareCall("{call get_no_of_emails(?)}");
@@ -895,11 +897,14 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
 					
 					while (myRes.next())
 					{
+						shorttageCount++;
 						int n = myStat.executeUpdate("update shortagelist set usn='"+myRes.getString("usn")+"', name='"+myRes.getString("name")+"' where usn='"+myRes.getString("usn")+"'");
 						if (n == 0)
 						{
 							myStat.execute("insert into shortagelist (usn,name,percent) values ('"+ myRes.getString("usn")+"','"+myRes.getString("name")+"',0)");
 						}
+						shortMail[m] = myRes.getString("email");
+						m++;
 					}
 					
 					/* Now we need to insert the shoratge list guys to shortagelist table */
@@ -908,8 +913,6 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-        		
-        		
         		
         		/* then we display it to the list */
 //        		new GetShortageList().getShortageList(shortageTable);
@@ -947,6 +950,19 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
         JButton btnSendMail2 = new JButton("SEND MAIL");
         btnSendMail2.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
+        		/* First need to get emails */
+        		try {
+        			m = 0;
+					Statement myShortStat = myCon.createStatement();
+					myRes.close();
+					myRes = myShortStat.executeQuery("select * from students");
+					
+					SendMailForTemp sendmail = new SendMailForTemp("", "SHORTAGE OF ATTENDENCE", 0, shortMail, 2);
+					
+				}
+        		catch (SQLException e1) {
+					e1.printStackTrace();
+				}
         		
         	}
         });
@@ -1084,7 +1100,7 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
 					
 					myStat.executeUpdate("insert into students(usn,name,email,phone) values ('" + usn +"','"+name+"','"+emString+"','"+phoneNo+"'"+")");
 //					System.out.println("insert into students(usn,name,email,phone,percent) values ('" + usn +"','"+name+"','"+emString+"','"+phoneNo+"',"+perAt+ ")");
-					myStat.executeUpdate("insert into attendinfo(usn,name,nhours) values ('" + usn +"','"+name+"',"+0+")");
+					myStat.executeUpdate("insert into attendinfo(usn,name,nhours,email) values ('" + usn +"','"+name+"',"+0+",'"+emString+"')");
 					JOptionPane jopn = new JOptionPane();
 					jopn.showMessageDialog(null, "Record Successfully inserted");
 					filldetails();
