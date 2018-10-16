@@ -1,4 +1,3 @@
-package bunkersprojectsvit;
 import java.sql.*;
 
 import javax.swing.JTable;
