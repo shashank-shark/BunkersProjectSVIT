@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package bunkersprojectsvit;
 
 /**
  *
@@ -35,8 +34,6 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import com.toedter.calendar.JDateChooser;
-
-import javafx.scene.control.ProgressBar;
 
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
