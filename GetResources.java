@@ -1,8 +1,9 @@
-package bunkersprojectsvit;
-import java.sql.*;
 /*
  * I need a static file to access all the data members.
  */
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 public class GetResources {
 	
