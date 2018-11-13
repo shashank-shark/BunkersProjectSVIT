@@ -1,5 +1,3 @@
-package bunkersprojectsvit;
-
 import java.util.Date;
 import java.util.Properties;
 
@@ -22,11 +20,11 @@ public class SendMailForTemp {
 			String user = "www.shashankreddy@gmail.com";
 			String pass = "Shashank@1998";
 			
-			String from = "www.shashankreddy@gmail.com";
+			String from = "BunkersProject(SSCW@SVIT)";
 			String subject;
 			if (key == 1)
 			{
-				 subject = "Your ward did not attend" + " " + subjectTaught + " for" + Integer.toString(hours) + "hours" ;
+				 subject = "Your ward did not attend" + " " + subjectTaught + " for " + Integer.toString(hours) + " hours" ;
 			}
 			else
 			{
