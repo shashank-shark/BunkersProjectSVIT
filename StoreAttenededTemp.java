@@ -1,5 +1,3 @@
-package bunkersprojectsvit;
-
 public class StoreAttenededTemp {
 	/* here i try to store the students who attended 
 	 * the classes for this session.
