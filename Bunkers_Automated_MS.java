@@ -12,6 +12,9 @@
 import java.text.SimpleDateFormat;
 
 import java.util.Calendar;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -27,6 +30,9 @@ import org.omg.PortableInterceptor.SUCCESSFUL;
 import net.proteanit.sql.DbUtils;
 
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.awt.event.ActionEvent;
 import java.sql.*;
 import java.awt.Color;
@@ -38,6 +44,7 @@ import com.toedter.calendar.JDateChooser;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JTable;
+import java.awt.Toolkit;
 
 //import org.jdesktop.swingx.JXDatePicker;
 public class Bunkers_Automated_MS extends javax.swing.JFrame {
@@ -52,6 +59,9 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
 	private Connection myCon = null;
 	private Statement myStat = null;
 	private ResultSet myRes = null;
+	
+	// Adding Image on JPanel here
+	
 	
 	private String url = null;
 	private String user = null;
@@ -73,47 +83,53 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
 	String shortMail[] = new String[75];
 	
     public Bunkers_Automated_MS() {
+    	setIconImage(Toolkit.getDefaultToolkit().getImage("/home/shashank-sapphire-coder/Coding/BunkersProjectSVIT/luckycat.jpg"));
     	
     	/* Get connection at the start of the program */
 	    	getConnections();
 	        initComponents();
 	        filldetails();
+	        
 			// JXDatePicker picker = new JXDatePicker();
 			//picker.setDate(Calendar.getInstance().getTime());
 			//picker.setFormats(new SimpleDateFormat("dd.MM.yyyy"));
         
     }
 
-    private void filldetails() {
+	private void filldetails() {
     	try {
 			myStat = myCon.createStatement();
 			myRes = myStat.executeQuery("select * from students");
 			DefaultTableModel model = (DefaultTableModel)tab1Table.getModel();
+			
+			myRes = myStat.executeQuery("select usn,name,email from students");
+			insertDeleteTable.setModel(DbUtils.resultSetToTableModel(myRes));
 			/* Now insert into the gui table */
-			int i = 0;
-			while (myRes.next())
-			{
-				model.setValueAt(myRes.getString("usn"), i, 0);
-				model.setValueAt(myRes.getString("name"), i, 1);
-				model.setValueAt(myRes.getString("email"), i, 2);
-				i++;
-			}
+//			int i = 0;
+//			while (myRes.next())
+//			{
+//				model.setValueAt(myRes.getString("usn"), i, 0);
+//				model.setValueAt(myRes.getString("name"), i, 1);
+//				model.setValueAt(myRes.getString("email"), i, 2);
+//				i++;
+//			}
 			
-			myStat.close();
-			myStat = myCon.createStatement();
-			myRes = myStat.executeQuery("select * from students");
-			model = (DefaultTableModel)insertDeleteTable.getModel();
-			i = 0;
-			
-			while (myRes.next())
-			{
-				model.setValueAt(myRes.getString("usn"),i,0);
-				model.setValueAt(myRes.getString("name"), i, 1);
-				model.setValueAt(myRes.getString("email"), i, 2);
-				model.setValueAt(myRes.getString("percent"), i, 3);
-				
-				i++;
-			}
+//			myStat.close();
+//			myStat = myCon.createStatement();
+//			myRes = myStat.executeQuery("select * from students");
+//			model = (DefaultTableModel)insertDeleteTable.getModel();
+//			tab1Table.setModel(DbUtils.resultSetToTableModel(myRes));
+//			i = 0;
+//			
+//			while (myRes.next())
+//			{
+//				model.setValueAt(myRes.getString("usn"),i,0);
+//				model.setValueAt(myRes.getString("name"), i, 1);
+//				model.setValueAt(myRes.getString("email"), i, 2);
+////				model.setValueAt(myRes.getString("percent"), i, 3);
+//				
+//				i++;
+//			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -167,7 +183,7 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
         jPanel7 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("BunkerRIP");
+        setTitle("Absentee Reporter Project");
         setResizable(false);
 
         jTabbedPane1.setFont(new java.awt.Font("Tahoma", 1, 18));
@@ -345,6 +361,7 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
                         JDateChooser dateChooser = new JDateChooser();
                         dateChooser.setBounds(24, 43, 176, 39);
                         panel_4.add(dateChooser);
+                       
                         
                         lblSelectTheDate = new JLabel("Select the date :");
                         lblSelectTheDate.setFont(new Font("Dialog", Font.BOLD, 16));
@@ -363,7 +380,7 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
                         jTabbedPane1.addTab("ENTRY", null, jScrollPane4, null);
                         tab1Table = new javax.swing.JTable();
                         
-                                tab1Table.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+                                tab1Table.setFont(new Font("Tahoma", Font.BOLD, 15)); // NOI18N
                                 tab1Table.setModel(new DefaultTableModel(
                                 	new Object[][] {
                                 		{null, null, null, Boolean.TRUE},
@@ -460,7 +477,7 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
                         btnOk.setBounds(34, 94, 140, 40);
                         panel_4.add(btnOk);
                         
-                                jTabbedPane1.addTab("UPDATE", jPanel1);
+                                jTabbedPane1.addTab("UPDATE & SEND SMS", jPanel1);
                                 
                                 JPanel panel_13 = new JPanel();
                                 panel_13.setBounds(0, 0, 762, 500);
@@ -559,6 +576,8 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
                                 		/* Now i create an object of SendSMS and send the sms */
                                 		SendSMS obj = new SendSMS();
                                 		obj.sendSMSTo(phNo,messg);
+                                		
+                                		numberTextField.setText("");
                                 	}
                                 });
                                 messageButton.setFont(new Font("Dialog", Font.BOLD, 18));
@@ -1103,7 +1122,7 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
 					filldetails();
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null,e1.getMessage());
 				}
 				
 				usnTextField.setText("");
@@ -1163,14 +1182,17 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
 					myStat.close();
 					myStat = myCon.createStatement();
 					myStat.executeUpdate("delete from students where usn='"+usn+"'");
-					myStat.executeUpdate("delete from attendinfo where usn='"+usn+"'");
+//					myStat.executeUpdate("delete from attendinfo where usn='"+usn+"'");
 					JOptionPane opn = new JOptionPane();
 					opn.showMessageDialog(null, "Record Successfully deleted");
-					filldetails();
+//					filldetails();
+					ResultSet myResNow = myStat.executeQuery("select usn,name,email from students");
+					insertDeleteTable.setModel(DbUtils.resultSetToTableModel(myResNow));
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null, e1.getMessage());
 				}
+        		deleteText.setText("");
         		
         	}
         });
@@ -1179,8 +1201,165 @@ public class Bunkers_Automated_MS extends javax.swing.JFrame {
         panel_11.add(btnDelete);
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         jTabbedPane1.addTab("ABOUT", jPanel7);
+        jPanel7.setLayout(null);
+        
+        JPanel panel_22 = new JPanel();
+        panel_22.setBackground(new Color(0, 0, 0));
+        panel_22.setBounds(6, 6, 499, 68);
+        jPanel7.add(panel_22);
+        panel_22.setLayout(null);
+        
+        JLabel lblAbsenteeReporterProject = new JLabel("ABSENTEE REPORTER PROJECT");
+        lblAbsenteeReporterProject.setForeground(new Color(255, 255, 255));
+        lblAbsenteeReporterProject.setFont(new Font("Consolas", Font.BOLD, 25));
+        lblAbsenteeReporterProject.setBounds(64, 6, 369, 56);
+        panel_22.add(lblAbsenteeReporterProject);
+        
+        JPanel panel_23 = new JPanel();
+        panel_23.setBackground(new Color(0, 0, 0));
+        panel_23.setBounds(6, 84, 499, 413);
+        jPanel7.add(panel_23);
+        panel_23.setLayout(null);
+        
+        JPanel panel_25 = new JPanel();
+        panel_25.setBorder(new TitledBorder(null, "Team Members", TitledBorder.CENTER, TitledBorder.CENTER, null, null));
+        panel_25.setBounds(6, 25, 476, 396);
+        panel_23.add(panel_25);
+        panel_25.setLayout(null);
+        
+        JPanel panel_24 = new JPanel();
+        panel_24.setBounds(18, 24, 452, 353);
+        panel_25.add(panel_24);
+        panel_24.setLayout(null);
+        
+        JLabel lblShashankJ = new JLabel("Shashank J");
+        lblShashankJ.setForeground(new Color(0, 0, 0));
+        lblShashankJ.setBackground(new Color(255, 255, 255));
+        lblShashankJ.setFont(new Font("Courier New", Font.BOLD, 22));
+        lblShashankJ.setBounds(0, 6, 187, 31);
+        panel_24.add(lblShashankJ);
+        
+        JLabel lblShashankKL = new JLabel("Shashank K L");
+        lblShashankKL.setForeground(new Color(0, 0, 0));
+        lblShashankKL.setBackground(new Color(255, 255, 255));
+        lblShashankKL.setFont(new Font("Courier New", Font.BOLD, 22));
+        lblShashankKL.setBounds(0, 189, 187, 40);
+        panel_24.add(lblShashankKL);
+        
+        JPanel panel_26 = new JPanel();
+        panel_26.setBackground(new Color(0, 0, 0));
+        panel_26.setBounds(0, 49, 279, 107);
+        panel_24.add(panel_26);
+        panel_26.setLayout(null);
+        
+        JPanel panel_28 = new JPanel();
+        panel_28.setForeground(new Color(255, 255, 255));
+        panel_28.setBounds(6, 12, 267, 95);
+        panel_26.add(panel_28);
+        panel_28.setLayout(null);
+        
+        JLabel label_7 = new JLabel("5th sem CSE.");
+        label_7.setFont(new Font("DejaVu Sans", Font.BOLD, 16));
+        label_7.setBounds(6, 6, 189, 15);
+        panel_28.add(label_7);
+        
+        JLabel label_8 = new JLabel("Worked on Database");
+        label_8.setFont(new Font("DejaVu Sans", Font.BOLD, 16));
+        label_8.setBounds(6, 29, 255, 19);
+        panel_28.add(label_8);
+        
+        JLabel lblProgrammingFront = new JLabel("programming, front");
+        lblProgrammingFront.setFont(new Font("DejaVu Sans", Font.BOLD, 16));
+        lblProgrammingFront.setBounds(6, 44, 255, 29);
+        panel_28.add(lblProgrammingFront);
+        
+        JLabel lblEndBackendProgramming = new JLabel("end, backend programming.");
+        lblEndBackendProgramming.setFont(new Font("DejaVu Sans", Font.BOLD, 16));
+        lblEndBackendProgramming.setBounds(6, 60, 255, 29);
+        panel_28.add(lblEndBackendProgramming);
+        
+        JPanel panel_27 = new JPanel();
+        panel_27.setLayout(null);
+        panel_27.setBackground(new Color(0, 0, 0));
+        panel_27.setBounds(0, 240, 279, 107);
+        panel_24.add(panel_27);
+        
+        JPanel panel_29 = new JPanel();
+        panel_29.setForeground(new Color(255, 255, 255));
+        panel_29.setBounds(6, 12, 267, 95);
+        panel_27.add(panel_29);
+        panel_29.setLayout(null);
+        
+        JLabel lblthSemCse = new JLabel("5th sem CSE.");
+        lblthSemCse.setFont(new Font("DejaVu Sans", Font.BOLD, 16));
+        lblthSemCse.setBounds(6, 6, 189, 15);
+        panel_29.add(lblthSemCse);
+        
+        JLabel lblWorkedOnDatabase = new JLabel("Worked on Database");
+        lblWorkedOnDatabase.setFont(new Font("DejaVu Sans", Font.BOLD, 16));
+        lblWorkedOnDatabase.setBounds(6, 32, 255, 19);
+        panel_29.add(lblWorkedOnDatabase);
+        
+        JLabel lblConnectionsAnd = new JLabel("connections and ");
+        lblConnectionsAnd.setFont(new Font("DejaVu Sans", Font.BOLD, 16));
+        lblConnectionsAnd.setBounds(6, 44, 255, 29);
+        panel_29.add(lblConnectionsAnd);
+        
+        JLabel lblCreationOfTables = new JLabel("creation of tables.");
+        lblCreationOfTables.setFont(new Font("DejaVu Sans", Font.BOLD, 16));
+        lblCreationOfTables.setBounds(6, 60, 255, 29);
+        panel_29.add(lblCreationOfTables);
+        
+        JPanel panel_31 = new JPanel();
+        panel_31.setBorder(new TitledBorder(null, "About this project", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+        panel_31.setBounds(512, 12, 514, 490);
+        jPanel7.add(panel_31);
+        panel_31.setLayout(null);
+        
+        JPanel panel_30 = new JPanel();
+        panel_30.setBounds(5, 17, 504, 485);
+        panel_31.add(panel_30);
+        panel_30.setLayout(null);
+        
+        
+        JPanel panel_32 = new JPanel();
+        panel_32.setBackground(new Color(0, 0, 0));
+        panel_32.setBounds(12, 12, 170, 178);
+        panel_30.add(panel_32);
+        panel_32.setLayout(null);
+        
+        BufferedImage myPicture;
+		try {
+			myPicture = ImageIO.read(this.getClass().getResource("luckycat.jpg"));
+			 JLabel lblNewLabel = new JLabel(new ImageIcon(myPicture));
+		        lblNewLabel.setBounds(0, 12, 171, 161);
+		        panel_32.add(lblNewLabel);
+		        
+		        JPanel panel_33 = new JPanel();
+		        panel_33.setBackground(new Color(169, 169, 169));
+		        panel_33.setBounds(22, 202, 470, 271);
+		        panel_30.add(panel_33);
+		        panel_33.setLayout(null);
+		        
+		        JScrollPane scrollPane_3 = new JScrollPane();
+		        scrollPane_3.setBounds(12, 12, 446, 247);
+		        panel_33.add(scrollPane_3);
+		        
+		        JTextArea textArea = new JTextArea();
+		        scrollPane_3.setViewportView(textArea);
+		        
+		        JTextArea textArea_1 = new JTextArea();
+		        textArea_1.setBounds(12, 0, 1, 15);
+		        panel_33.add(textArea_1);
+		        
+		        JTextArea textArea_2 = new JTextArea();
+		        textArea_2.setBounds(457, 244, 1, 15);
+		        panel_33.add(textArea_2);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+        
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
