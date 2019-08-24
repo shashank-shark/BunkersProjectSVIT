@@ -7,7 +7,7 @@ Desktop application that sends email for a particular ward who is absent to the 
 |---|---|---|
 | 1  | Snapshots  |  [Click Here](#SNAPSHOTS) |
 |  2 | External Jar's  | [Click Here](#external-jar-files-used)  |
-| 3  | Furthur Improvements  | [Click Here]()  |
+| 3  | Further Improvements  | [Click Here](#further-improvements)  |
 
 > ### SNAPSHOTS
 |   |   |
@@ -24,3 +24,6 @@ Desktop application that sends email for a particular ward who is absent to the 
 (4) jcalender.jar
 (5) rs2xml.jar
 ```
+
+> ### FURTHER IMPROVEMENTS
+I am planning to develop an android app for the same. Integrate into firebase and achieve real-time working.
